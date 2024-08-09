@@ -1,7 +1,8 @@
 import os
 import logging
 import requests
-from krb5ticket import Krb5Ticket
+from minikerberos.client import KerberosClient
+from minikerberos.common import KerberosTarget
 from time import sleep
 
 # Configure logging
@@ -11,22 +12,22 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 principal = "username@REALM"
 keytab_file = "/path/to/your.keytab"
 
-# Optionally set the path to krb5.conf if not in the default location
-krb5_conf_path = "/path/to/your/krb5.conf"
-os.environ["KRB5_CONFIG"] = krb5_conf_path
+# Kerberos target settings
+host = 'namenode-hostname'
+realm = 'REALM'
+target = KerberosTarget.from_url(f'krb5://{principal}@{realm}')
 
-# Initialize Kerberos ticket using keytab file
-ticket = Krb5Ticket(principal, keytab=keytab_file)
-ticket.obtain()
+# Initialize Kerberos client using keytab file
+client = KerberosClient(target)
+client.prepare_apreq(keytab=keytab_file)
 
 # Set up the URL to obtain the delegation token
-host = 'namenode-hostname'
 port = 50070  # Default WebHDFS port
 url = f"http://{host}:{port}/webhdfs/v1/?op=GETDELEGATIONTOKEN"
 
 # Headers for Kerberos authentication
 headers = {
-    'Authorization': f'Negotiate {ticket.auth_header()}'
+    'Authorization': f'Negotiate {client.get_token()}'
 }
 
 # Obtain the delegation token

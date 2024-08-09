@@ -4,29 +4,43 @@ This project provides scripts to upload and download files from HDFS using WebHD
 
 ## Requirements
 
-- Python 3.9 or higher
+- Python 3.6 or higher
 - Kerberos client setup (`krb5.conf` configured)
 - Keytab file for authentication
 
 ## Installation
 
-1. Clone the repository:
+1. **Install Poetry:**
+
    ```sh
-   git clone https://github.com/yourusername/webhdfs-kerberos.git
-   cd webhdfs-kerberos
+   curl -sSL https://install.python-poetry.org | python3 -
    ```
 
-2. Install the required Python packages:
+2. **Clone the Repository:**
+
    ```sh
-   pip install -r requirements.txt
+   git clone https://github.com/PavelSozonov/webhdfs-example.git
+   cd webhdfs-example
+   ```
+
+3. **Install Dependencies:**
+
+   ```sh
+   poetry install
    ```
 
 ## Configuration
 
 1. **Kerberos Setup:**
+
    Ensure your Kerberos client is configured properly. Set the `KRB5_CONFIG` environment variable to point to your `krb5.conf` file if it's not in the default location.
 
+   ```sh
+   export KRB5_CONFIG=/path/to/your/krb5.conf
+   ```
+
 2. **Edit the Scripts:**
+
    Update the `principal`, `keytab_file`, `host`, `port`, and paths (both local and HDFS) in the `webhdfs_upload_file.py`, `webhdfs_upload_directory.py`, and `webhdfs_download_file.py` scripts.
 
 ## Usage
@@ -34,25 +48,26 @@ This project provides scripts to upload and download files from HDFS using WebHD
 ### Uploading a Single File
 
 Run the script to upload a single file to HDFS:
+
 ```sh
-python webhdfs_upload_file.py
+poetry run python webhdfs_upload_file.py
 ```
 
 ### Uploading a Directory
 
 Run the script to upload a directory to HDFS:
+
 ```sh
-python webhdfs_upload_directory.py
+poetry run python webhdfs_upload_directory.py
 ```
 
 ### Downloading a File
 
 Run the script to download a file from HDFS:
-```sh
-python webhdfs_download_file.py
-```
 
-The files will be uploaded or downloaded according to the paths specified in the scripts.
+```sh
+poetry run python webhdfs_download_file.py
+```
 
 ## Logging
 
