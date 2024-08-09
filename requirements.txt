@@ -1,2 +1,2 @@
 requests==2.31.0
-python-krb5ticket==0.1.2
+python-krb5ticket==1.0.3

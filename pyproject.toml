@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webhdfs-kerberos"
+version = "0.1.0"
+description = "Scripts to upload and download files from HDFS using WebHDFS with Kerberos authentication."
+authors = [
+    { name="Pavel Sozonov", email="pavel.sozonov@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = [
+    "requests==2.31.0",
+    "python-krb5ticket==1.0.3"  # Updated to one of the specified versions
+]
+
+[project.urls]
+"Homepage" = "https://github.com/PavelSozonov/webhdfs-example"

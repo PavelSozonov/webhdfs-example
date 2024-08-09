@@ -44,19 +44,19 @@ def upload_file_to_hdfs(local_file_path, hdfs_path, max_retries=3):
     for attempt in range(max_retries):
         try:
             url = f"http://{host}:{port}/webhdfs/v1{hdfs_path}?op=CREATE&delegation={token}&overwrite=true"
-
+            
             # Initiate the file upload
             response = requests.put(url, headers={'Content-Type': 'application/octet-stream'}, allow_redirects=False)
-
+            
             # Check if the request was redirected
             if response.status_code == 307:
                 redirect_url = response.headers['Location']
-
+                
                 # Perform the actual file upload
                 with open(local_file_path, 'rb') as f:
                     file_data = f.read()
                     response = requests.put(redirect_url, data=file_data, headers={'Content-Type': 'application/octet-stream'})
-
+                
                 # Check if the upload was successful
                 if response.status_code == 201:
                     logging.info(f"File {local_file_path} uploaded successfully.")
@@ -67,10 +67,10 @@ def upload_file_to_hdfs(local_file_path, hdfs_path, max_retries=3):
                 logging.error(f"Failed to initiate file upload for {local_file_path}. Status code: {response.status_code}")
         except Exception as e:
             logging.error(f"Exception occurred while uploading file {local_file_path}: {str(e)}")
-
+        
         # Wait before retrying
         sleep(2 ** attempt)
-
+    
     logging.error(f"Failed to upload file {local_file_path} after {max_retries} attempts.")
 
 # Path to the local file to upload
