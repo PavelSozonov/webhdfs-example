@@ -1,7 +1,7 @@
 import argparse
 from pyspark.sql import SparkSession
-from hadoop.fs import FileSystem, Path
 
+# Function to copy HDFS file to local directory
 def copy_hdfs_to_local(input_path, output_path):
     # Initialize Spark session
     spark = SparkSession.builder \
@@ -12,11 +12,13 @@ def copy_hdfs_to_local(input_path, output_path):
     hadoop_conf = spark.sparkContext._jsc.hadoopConfiguration()
 
     # Create HDFS FileSystem object
-    fs = FileSystem.get(hadoop_conf)
+    fs = org.apache.hadoop.fs.FileSystem.get(hadoop_conf)
+
+    # Define HDFS and local paths
+    hdfs_path = org.apache.hadoop.fs.Path(input_path)
+    local_path = org.apache.hadoop.fs.Path(output_path)
 
     # Copy file from HDFS to local file system
-    hdfs_path = Path(input_path)
-    local_path = Path(output_path)
     fs.copyToLocalFile(hdfs_path, local_path)
 
     # Optionally, stop the Spark session
